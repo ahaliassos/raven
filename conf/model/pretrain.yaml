@@ -1,0 +1,16 @@
+defaults:
+  - visual_backbone: resnet_transformer_base
+  - audio_backbone: resnet_transformer
+  - predictor: transformer
+  - momentum_scheduler: cosine
+obj:
+  _target_: models.byol_av.BYOLAV
+use_predictor: True
+sync_batchnorm: True
+target_dropout_off: True
+masked_only_loss: False
+pretrained_model_path:
+v2v_weight: 0
+a2a_weight: 1
+v2a_weight: 1
+a2v_weight: 1

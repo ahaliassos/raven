@@ -1,0 +1,19 @@
+defaults:
+  - checkpoint: simple
+  - data: pretrain
+  - logger: eldorado
+  - logging: default
+  - model: pretrain
+  - optimizer: pretrain
+  - trainer: pretrain
+hydra:  
+  output_subdir: null  
+  run:  
+    dir: .
+project_name: raven_pretrain
+experiment_name:
+num_workers: 8
+log_wandb: True
+fix_seed: True
+gpus:
+slurm_job_id:

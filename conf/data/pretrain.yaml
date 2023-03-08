@@ -1,0 +1,21 @@
+defaults:
+  - dataset: lrs3
+  - channel: grayscale
+  - crop_type: mouth
+horizontal_flip_prob: 0.5
+num_frames: 25
+use_masking: False
+mask_prob: 0.2
+mask_length: 3 
+frames_per_gpu: 2400
+frames_per_gpu_val: 500
+name_lrs2: LRS2
+name_lrs3: LRS3
+name_vox2: VoxCeleb2
+video_dir_lrs2: LRS2_h96w96_avi
+audio_dir_lrs2: LRS2_audio
+video_dir_lrs3: LRS3_h96w96_avi
+audio_dir_lrs3: LRS3_audio
+video_dir_vox2: crop_96x96_seg24s_avi
+audio_dir_vox2: audio_seg24s
+modality: audiovisual

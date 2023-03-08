@@ -1,0 +1,4 @@
+monitor: monitoring_step
+mode: max
+dirpath:
+save_top_k: 10

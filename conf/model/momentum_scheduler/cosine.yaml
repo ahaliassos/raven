@@ -1,0 +1,5 @@
+_target_: schedulers.warmup_cosine.WarmupCosineMomentumScheduler
+base_momentum: 0.999
+warmup_epochs: 0
+cosine_decay: True
+num_epochs: ${trainer.max_epochs}

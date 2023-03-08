@@ -1,0 +1,7 @@
+name: default
+penalty: 0.0
+ctc_weight: 0.1
+lm_weight: 0.0
+beam_size: 40
+minlenratio: 0.0
+maxlenratio: 0.0
