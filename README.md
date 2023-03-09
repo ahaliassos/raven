@@ -19,54 +19,50 @@ We provide code for the reproduction of the main results in [Jointly Learning Vi
     python preprocessing/extract_mouths.py --src_dir ${SOURCE_DIR} --tgt_dir ${TARGET_DIR} --landmarks_dir ${LANDMARKS_DIR}
     ``` 
 
-## Pre-training
-* We provide example sbatch scripts for pre-training in *scripts/pretraining*. For example,
-    ```
-    sbatch scripts/pretraining/base_lrs3.sh
-    ``` 
-performs pre-training with the RAVEn Base model on LRS3. It uses 4 nodes with 8 gpus per node. Tweak the scripts according to the computing environment. 
-* Note: We use [hydra](https://hydra.cc/docs/intro/) for configuration management and [Weights and Biases](https://wandb.ai/site) for logging.
+## Testing
+* Below are the checkpoints corresponding to Tables 1 and 2 for VSR and ASR on LRS3. Models are provided for both low- and high-resource labelled data settings. In the high-resource setting, the models are fine-tuned on the full LRS3 dataset (433 hours), and the low-resource they are fine-tuned on a subset ("trainval") of LRS3 (30 hours). 
 
-| Model | Pre-training dataset | Checkpoint |
-|:-----:|:--------------------:|:----------:|
-|  Base |         LRS3         |            |
-|  Base |     LRS3+Vox2-en     |            |
-| Large |     LRS3+Vox2-en     |            |
+* In some cases, the models were re-trained so the WER may differ slightly from the ones shown in the paper and reproduced below.
 
-## Fine-tuning
-* We provide example sbatch scripts for fine-tuning in *scripts/finetuning*. For example,
-    ```
-    sbatch scripts/finetuning/vsr/lrs3_trainval/large_lrs3vox2.sh
-    ``` 
-performs fine-tuning on LRS3-trainval with the RAVEn Large model pre-trained on LRS3+Vox2-en. It uses 2 nodes with 8 gpus per node. Tweak the scripts according to the computing environment. 
+* The paths for the slurm bash scripts used for inference are shown in the table below. Note that the scripts may need to be modified according to the cluster environment. 
 
-|          Model         | Pre-training dataset | WER (%) |                                           Checkpoint                                           |
-|:----------------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|
-|          Base          |         LRS3         |   47.0  | [Download](https://drive.google.com/file/d/1xs3VOxdqRIuBlQLmCZxsf02Qd0PGMXWf/view?usp=sharing) |
-|          Base          |     LRS3+Vox2-en     |   40.2  | [Download](https://drive.google.com/file/d/14gCElgSyIa94XA0Pkc_dvZtZyz3_9kgb/view?usp=sharing) |
-|          Large         |     LRS3+Vox2-en     |   32.5  | [Download](https://drive.google.com/file/d/1ueLRKgcGwSt0rJlajlMQ2QN_TctYMTUR/view?usp=sharing) |
-| Large w/ self-training |     LRS3+Vox2-en     |   24.8  | [Download](https://drive.google.com/file/d/1MXQGVmSM0GeHQA5iy9Y-CJFqtJzS0wQu/view?usp=sharing) |
+### VSR
+#### Low-resource
 
-|          Model         | Pre-training dataset | WER (%) |                                           Checkpoint                                           |
-|:----------------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|
-|          Base          |         LRS3         |   4.7   | [Download](https://drive.google.com/file/d/1UJXGo9qUZ0VxPNlJfL2-JD5_428JqxNv/view?usp=sharing) |
-|          Base          |     LRS3+Vox2-en     |   3.8   | [Download](https://drive.google.com/file/d/124Xu_0hB8qV2RKTbEZ5AwgckXIId4vqW/view?usp=sharing) |
-|          Large         |     LRS3+Vox2-en     |   2.7   | [Download](https://drive.google.com/file/d/1vYgeo67o43XM-S24RgMJle1Acbev5fgt/view?usp=sharing) |
-| Large w/ self-training |     LRS3+Vox2-en     |   2.3   | [Download](https://drive.google.com/file/d/1uCycl-je52KuLuEdMnerJYttWtORDGJ-/view?usp=sharing) |
+|       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                         |
+|:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|-----------------------------------------------------|
+|       Base       |         LRS3         |   47.0  | [Download](https://drive.google.com/file/d/1xs3VOxdqRIuBlQLmCZxsf02Qd0PGMXWf/view?usp=sharing) | scripts/vsr/lrs3_trainval/base_lrs3.sh              |
+|       Base       |     LRS3+Vox2-en     |   40.2  | [Download](https://drive.google.com/file/d/14gCElgSyIa94XA0Pkc_dvZtZyz3_9kgb/view?usp=sharing) | scripts/vsr/lrs3_trainval/base_lrs3vox2.sh          |
+|       Large      |     LRS3+Vox2-en     |   32.5  | [Download](https://drive.google.com/file/d/1ueLRKgcGwSt0rJlajlMQ2QN_TctYMTUR/view?usp=sharing) | scripts/vsr/lrs3_trainval/large_lrs3vox2.sh         |
+|    Large w/ ST   |     LRS3+Vox2-en     |   24.8  | [Download](https://drive.google.com/file/d/1MXQGVmSM0GeHQA5iy9Y-CJFqtJzS0wQu/view?usp=sharing) | scripts/vsr/lrs3_trainval/large_lrs3vox2_self.sh    |
+| Large w/ ST + LM |     LRS3+Vox2-en     |   23.8  |                                        same as last row                                        | scripts/vsr/lrs3_trainval/large_lrs3vox2_self_lm.sh |
 
-|          Model         | Pre-training dataset | WER (%) |                                           Checkpoint                                           |
-|:----------------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|
-|          Base          |         LRS3         |   39.1  | [Download](https://drive.google.com/file/d/18uqnWgtVfqIFHCvEp0k6mGOWf7O6dDge/view?usp=sharing) |
-|          Base          |     LRS3+Vox2-en     |   33.1  | [Download](https://drive.google.com/file/d/1qc2U5ah1NFaO94caRnsA4kOEHTJ3_P99/view?usp=sharing) |
-|          Large         |     LRS3+Vox2-en     |   27.8  | [Download](https://drive.google.com/file/d/1OQZWjDYjQoApjrF3s2INsQSiS4XPXUu_/view?usp=sharing) |
-| Large w/ self-training |     LRS3+Vox2-en     |   24.4  | [Download](https://drive.google.com/file/d/1tNZn_BvAVdoIIv6G14_9PvpQtsp6XSOt/view?usp=sharing) |
+#### High-resource
+|       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                |
+|:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|--------------------------------------------|
+|       Base       |         LRS3         |   39.1  | [Download](https://drive.google.com/file/d/18uqnWgtVfqIFHCvEp0k6mGOWf7O6dDge/view?usp=sharing) | scripts/vsr/lrs3/base_lrs3.sh              |
+|       Base       |     LRS3+Vox2-en     |   33.1  | [Download](https://drive.google.com/file/d/1qc2U5ah1NFaO94caRnsA4kOEHTJ3_P99/view?usp=sharing) | scripts/vsr/lrs3/base_lrs3vox2.sh          |
+|       Large      |     LRS3+Vox2-en     |   27.8  | [Download](https://drive.google.com/file/d/1OQZWjDYjQoApjrF3s2INsQSiS4XPXUu_/view?usp=sharing) | scripts/vsr/lrs3/large_lrs3vox2.sh         |
+|    Large w/ ST   |     LRS3+Vox2-en     |   24.4  | [Download](https://drive.google.com/file/d/1tNZn_BvAVdoIIv6G14_9PvpQtsp6XSOt/view?usp=sharing) | scripts/vsr/lrs3/large_lrs3vox2_self.sh    |
+| Large w/ ST + LM |     LRS3+Vox2-en     |   23.1  |                                        same as last row                                        | scripts/vsr/lrs3/large_lrs3vox2_self_lm.sh |
+### ASR
+#### Low-resource
+|       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                         |
+|:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|-----------------------------------------------------|
+|       Base       |         LRS3         |   4.7   | [Download](https://drive.google.com/file/d/1UJXGo9qUZ0VxPNlJfL2-JD5_428JqxNv/view?usp=sharing) | scripts/asr/lrs3_trainval/base_lrs3.sh              |
+|       Base       |     LRS3+Vox2-en     |   3.8   | [Download](https://drive.google.com/file/d/124Xu_0hB8qV2RKTbEZ5AwgckXIId4vqW/view?usp=sharing) | scripts/asr/lrs3_trainval/base_lrs3vox2.sh          |
+|       Large      |     LRS3+Vox2-en     |   2.7   | [Download](https://drive.google.com/file/d/1vYgeo67o43XM-S24RgMJle1Acbev5fgt/view?usp=sharing) | scripts/asr/lrs3_trainval/large_lrs3vox2.sh         |
+|    Large w/ ST   |     LRS3+Vox2-en     |   2.3   | [Download](https://drive.google.com/file/d/1uCycl-je52KuLuEdMnerJYttWtORDGJ-/view?usp=sharing) | scripts/asr/lrs3_trainval/large_lrs3vox2_self.sh    |
+| Large w/ ST + LM |     LRS3+Vox2-en     |   1.9   |                                        same as last row                                        | scripts/asr/lrs3_trainval/large_lrs3vox2_self_lm.sh |
 
-|          Model         | Pre-training dataset | WER (%) |                                           Checkpoint                                           |
-|:----------------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|
-|          Base          |         LRS3         |   2.2   | [Download](https://drive.google.com/file/d/1_vyPBj0_cepe467IdtFM1H-WCFaapdBm/view?usp=sharing) |
-|          Base          |     LRS3+Vox2-en     |   1.9   | [Download](https://drive.google.com/file/d/1qcuGwTQhOttu6z8b6Rg0GwjVW4lJCthN/view?usp=sharing) |
-|          Large         |     LRS3+Vox2-en     |   1.4   | [Download](https://drive.google.com/file/d/1vqUAhnR_4riYWlVOMGX5XDpGvMpzW_pe/view?usp=sharing) |
-| Large w/ self-training |     LRS3+Vox2-en     |   1.4   | [Download](https://drive.google.com/file/d/1E-IPTZDX4I_YZuYbgSh4L4E7tJrUuQE8/view?usp=sharing) |
+#### High-resource
+|       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                         |
+|:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|-----------------------------------------------------|
+|       Base       |         LRS3         |   2.2   | [Download](https://drive.google.com/file/d/1_vyPBj0_cepe467IdtFM1H-WCFaapdBm/view?usp=sharing) | scripts/asr/lrs3/base_lrs3.sh              |
+|       Base       |     LRS3+Vox2-en     |   1.9   | [Download](https://drive.google.com/file/d/1qcuGwTQhOttu6z8b6Rg0GwjVW4lJCthN/view?usp=sharing) | scripts/asr/lrs3/base_lrs3vox2.sh          |
+|       Large      |     LRS3+Vox2-en     |   1.4   | [Download](https://drive.google.com/file/d/1vqUAhnR_4riYWlVOMGX5XDpGvMpzW_pe/view?usp=sharing) | scripts/asr/lrs3/large_lrs3vox2.sh         |
+|    Large w/ ST   |     LRS3+Vox2-en     |   1.4   | [Download](https://drive.google.com/file/d/1E-IPTZDX4I_YZuYbgSh4L4E7tJrUuQE8/view?usp=sharing) | scripts/asr/lrs3/large_lrs3vox2_self.sh    |
+| Large w/ ST + LM |     LRS3+Vox2-en     |   1.4   |                                        same as last row                                        | scripts/asr/lrs3/large_lrs3vox2_self_lm.sh |
 
 ## Citation
 If you find this repo useful for your research, please consider citing the following:
