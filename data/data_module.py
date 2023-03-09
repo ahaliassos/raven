@@ -115,9 +115,11 @@ class DataModule(LightningDataModule):
         transform_video = self._video_transform(mode='train')
         transform_audio = self._audio_transform(mode='train')
 
+        parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+
         train_ds = AVDataset(
             # data_path=os.path.join(ds_args.paths.root, ds_args.name_train, ds_args.train_csv),
-            data_path=os.path.join("data_paths", ds_args.train_csv),
+            data_path=os.path.join(parent_path, "data_paths", ds_args.train_csv),
             video_path_prefix_lrs2=os.path.join(ds_args.paths.root, self.cfg.data.name_lrs2, self.cfg.data.video_dir_lrs2),
             audio_path_prefix_lrs2=os.path.join(ds_args.paths.root, self.cfg.data.name_lrs2, self.cfg.data.audio_dir_lrs2),
             video_path_prefix_lrs3=os.path.join(ds_args.paths.root, self.cfg.data.name_lrs3, self.cfg.data.video_dir_lrs3),
@@ -143,8 +145,10 @@ class DataModule(LightningDataModule):
         transform_video = self._video_transform(mode='val')
         transform_audio = self._audio_transform(mode='val')
 
+        parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+
         val_ds = AVDataset(
-            data_path=os.path.join("data_paths", ds_args.val_csv),
+            data_path=os.path.join(parent_path, "data_paths", ds_args.val_csv),
             video_path_prefix_lrs2=os.path.join(ds_args.paths.root, self.cfg.data.name_lrs2, self.cfg.data.video_dir_lrs2),
             audio_path_prefix_lrs2=os.path.join(ds_args.paths.root, self.cfg.data.name_lrs2, self.cfg.data.audio_dir_lrs2),
             video_path_prefix_lrs3=os.path.join(ds_args.paths.root, self.cfg.data.name_lrs3, self.cfg.data.video_dir_lrs3),
@@ -165,8 +169,10 @@ class DataModule(LightningDataModule):
         transform_video = self._video_transform(mode='val')
         transform_audio = self._audio_transform(mode='val')
 
+        parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+
         val_ds = AVDataset(
-            data_path=os.path.join("data_paths", ds_args.test_csv),
+            data_path=os.path.join(parent_path, "data_paths", ds_args.test_csv),
             video_path_prefix_lrs2=os.path.join(ds_args.paths.root, self.cfg.data.name_lrs2, self.cfg.data.video_dir_lrs2),
             audio_path_prefix_lrs2=os.path.join(ds_args.paths.root, self.cfg.data.name_lrs2, self.cfg.data.audio_dir_lrs2),
             video_path_prefix_lrs3=os.path.join(ds_args.paths.root, self.cfg.data.name_lrs3, self.cfg.data.video_dir_lrs3),
