@@ -1,6 +1,5 @@
 from pytorch_lightning import LightningModule
 import torch
-from torch.optim import Adam, AdamW
 
 from espnet.asr.asr_utils import add_results_to_json, torch_load
 from espnet.nets.batch_beam_search import BatchBeamSearch
@@ -9,8 +8,7 @@ from espnet.nets.pytorch_backend.lm.transformer import TransformerLM
 from espnet.nets.pytorch_backend.nets_utils import make_non_pad_mask
 from espnet.nets.scorers.length_bonus import LengthBonus
 from metrics import WER
-from schedulers.warmup_cosine import WarmupCosineScheduler
-from utils import ids_to_str, set_requires_grad, UNIGRAM1000_LIST, get_param_groups
+from utils import ids_to_str, set_requires_grad, UNIGRAM1000_LIST
 
 
 class Learner(LightningModule):
@@ -100,27 +98,6 @@ class Learner(LightningModule):
     def forward(self, model, data, padding_mask, lengths, label):
         return model(data, padding_mask, lengths, label=label)
     
-    def training_step(self, data, batch_idx):
-        lengths = torch.tensor(data["data_lengths"], device=data["data"].device)
-        padding_mask = make_non_pad_mask(lengths).to(lengths.device)
-        label = data["label"].squeeze(1)
-        _, loss, loss_ctc, loss_att, acc = self.forward(
-            self.model, 
-            data["data"].squeeze(1), 
-            padding_mask.unsqueeze(-2), 
-            lengths,
-            label, 
-        )
-
-        self.log("loss", loss, on_step=True, on_epoch=True, batch_size=len(label))
-        self.log("loss_ctc", loss_ctc, on_step=False, on_epoch=True, batch_size=len(label))
-        self.log("loss_att", loss_att, on_step=False, on_epoch=True, batch_size=len(label))
-        self.log("decoder_acc", acc, on_step=True, on_epoch=True, batch_size=len(label))
-
-        self.log('monitoring_step', self.global_step)  # this is to save the last k checkpoints
-
-        return loss
-
     def calculate_wer(self, data, padding_mask, labels):
         labels = labels.squeeze(1)
         data = data.squeeze(1)
@@ -152,25 +129,6 @@ class Learner(LightningModule):
 
             self.wer.update(transcription, groundtruth)
 
-    def validation_step(self, data, batch_idx):
-        lengths = torch.tensor(data["data_lengths"], device=data["data"].device)
-        padding_mask = make_non_pad_mask(lengths).to(lengths.device)
-
-        label = data["label"].squeeze(1)
-
-        _, loss, loss_ctc, loss_att, acc = self.forward(
-            self.model, 
-            data["data"].squeeze(1), 
-            padding_mask.unsqueeze(-2), 
-            lengths,
-            label, 
-        )
-
-        self.log("loss_val", loss, batch_size=len(label))
-        self.log("loss_ctc_val", loss_ctc, batch_size=len(label))
-        self.log("loss_att_val", loss_att, batch_size=len(label))
-        self.log("decoder_acc_val", acc, batch_size=len(label))
-
     def test_step(self, data, batch_idx):
         lengths = torch.tensor(data["data_lengths"], device=data["data"].device)
         padding_mask = make_non_pad_mask(lengths).to(lengths.device)
@@ -181,37 +139,4 @@ class Learner(LightningModule):
         print(wer)
         self.log("wer", wer)
         self.wer.reset()
-    
-    def on_train_epoch_start(self):
-        sampler = self.trainer.train_dataloader.loaders.batch_sampler
-        if hasattr(sampler, "set_epoch"):
-            sampler.set_epoch(self.current_epoch)
-        return super().on_train_epoch_start()
-
-    # potentially want different schedulers for predictors and rest of model
-    def configure_optimizers(self):
-        opt_cls = AdamW if self.cfg.optimizer.weight_decay > 0. else Adam
-        optimizer = opt_cls(
-            get_param_groups(
-                self.model, 
-                self.backbone_args.elayers, 
-                self.cfg.optimizer.lr, 
-                self.cfg.optimizer.lr_other, 
-                self.cfg.optimizer.lr_decay_rate,
-                self.cfg.optimizer.ctc_equals_other,
-                min_lr=self.cfg.optimizer.min_lr,
-            ),
-            weight_decay=self.cfg.optimizer.weight_decay,
-            betas=self.cfg.optimizer.betas,
-        )
-
-        scheduler = WarmupCosineScheduler(
-            optimizer, 
-            self.cfg.optimizer.warmup_epochs, 
-            self.cfg.trainer.max_epochs, 
-            len(self.trainer.datamodule.train_dataloader()),
-            min_lr=self.cfg.optimizer.min_lr,
-        )
-        scheduler = {"scheduler": scheduler, "interval": "step", "frequency": 1} 
-        return [optimizer], [scheduler]      
-        
+            

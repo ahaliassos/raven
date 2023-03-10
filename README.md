@@ -26,6 +26,8 @@ We provide code for the reproduction of the main results in [Jointly Learning Vi
 
 * The paths for the slurm bash scripts used for inference are shown in the table below. Note that the scripts may need to be modified according to the cluster environment. 
 
+* The language model we used in this work can be found [here](https://drive.google.com/file/d/1mTeynSf6Sryh_mnVabpw-UwTRrh-mDc1/view?usp=sharing). 
+
 ### VSR
 #### Low-resource
 
@@ -74,5 +76,3 @@ If you find this repo useful for your research, please consider citing the follo
   year={2022}
 }
 ```
-
-python test.py data.modality=video experiment_name=test decode.lm_weight=0.4 model/visual_backbone=resnet_transformer_24layers model.pretrained_model_path=/datasets01/behavioural_computing_data/rodrigo/results/facemask/trainval_lrs3vox2ft_video_vox2byolavselfaud_transf24layers_warmup20_lr2em3lrother2em3_wd1em2_75ep_lrdecay0p75_droppath0p2_reinitafternorm_minlr1em5_1800frames_newlarge/model_avg_10.pth model.transfer_only_encoder=False model.pretrained_lm_path=/fsx/pingchuanma/LM_subword_data/train_transformerlm_pytorch_lm_transformer_large_ngpu8_unigram1000/rnnlm.model.best

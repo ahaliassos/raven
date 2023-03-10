@@ -1,5 +1,0 @@
-defaults:
-  - optim: adamw_pretrain
-base_lr_video: 1e-3
-base_lr_audio: ${optimizer.base_lr_video}
-warmup_epochs: 40

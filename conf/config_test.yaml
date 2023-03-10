@@ -2,10 +2,9 @@ defaults:
   - _self_
   - checkpoint: last_k
   - data: finetune
-  - logger: online
+  - logger: default
   - logging: default
   - model: finetune
-  - optimizer: finetune
   - trainer: finetune
   - decode: default
 hydra:  
