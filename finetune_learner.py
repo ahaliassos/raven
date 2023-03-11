@@ -41,17 +41,7 @@ class Learner(LightningModule):
         if self.cfg.model.pretrained_model_path:
             print("Load pretrained model weights")
             ckpt = torch.load(self.cfg.model.pretrained_model_path, map_location=lambda storage, loc: storage)
-            if self.cfg.model.transfer_only_encoder:
-                ckpt = {(k.replace("encoder.","") if k.startswith("encoder.") else k): v for k, v in ckpt.items()}
-                strict = True
-                if self.cfg.model.reinit_blocks != -1:
-                    strict = False
-                    total_blocks = self.backbone_args.elayers
-                    names = tuple((f"encoders.{total_blocks-i-1}" for i in range(self.cfg.model.reinit_blocks)))
-                    ckpt = {k: v for k, v in ckpt.items() if not k.startswith(names) and not k.startswith("after_norm")}
-                model.encoder.load_state_dict(ckpt, strict=strict)
-            else:
-                model.load_state_dict(ckpt)
+            model.load_state_dict(ckpt)
             
         return model
 

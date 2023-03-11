@@ -3,9 +3,5 @@ defaults:
   - visual_backbone: resnet_transformer_base
   - audio_backbone: resnet_transformer_base
   - language_model: default
-sync_batchnorm: True
 pretrained_model_path:
 pretrained_lm_path:
-avg_ckpts: 10
-transfer_only_encoder: True
-reinit_blocks: 0
