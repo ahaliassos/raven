@@ -48,7 +48,6 @@ class AVDataset(Dataset):
         self.num_fails = 0
 
     def configure_files(self):
-        # from https://github.com/facebookresearch/pytorchvideo/blob/874d27cb55b9d7e9df6cd0881e2d7fe9f262532b/pytorchvideo/data/labeled_video_paths.py#L37
         paths_counts_labels = []
         with open(self.data_path, "r") as f:
             for path_count_label in f.read().splitlines():
