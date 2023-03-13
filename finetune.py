@@ -27,8 +27,8 @@ def main(cfg):
     cfg.slurm_job_id = os.environ["SLURM_JOB_ID"]
 
     cfg.gpus = torch.cuda.device_count()
-    print('num gpus:', cfg.gpus)
-    
+    print("num gpus:", cfg.gpus)
+
     wandb_logger = None
     if cfg.log_wandb:
         wandb_logger = instantiate(cfg.logger)
@@ -39,9 +39,11 @@ def main(cfg):
     ckpt_callback = ModelCheckpoint(
         monitor=cfg.checkpoint.monitor,
         mode=cfg.checkpoint.mode,
-        dirpath=os.path.join(cfg.checkpoint.dirpath, cfg.experiment_name) if cfg.checkpoint.dirpath else None,
+        dirpath=os.path.join(cfg.checkpoint.dirpath, cfg.experiment_name)
+        if cfg.checkpoint.dirpath
+        else None,
         save_last=True,
-        filename=f'{{epoch}}',
+        filename=f"{{epoch}}",
         save_top_k=cfg.checkpoint.save_top_k,
     )
 
@@ -55,7 +57,7 @@ def main(cfg):
         **cfg.trainer,
         logger=wandb_logger,
         callbacks=callbacks,
-        strategy = DDPPlugin(find_unused_parameters=False) if cfg.gpus > 1 else None
+        strategy=DDPPlugin(find_unused_parameters=False) if cfg.gpus > 1 else None,
     )
 
     if cfg.train:
@@ -67,12 +69,17 @@ def main(cfg):
             last = [
                 os.path.join(
                     cfg.checkpoint.dirpath, cfg.experiment_name, f"epoch={n}.ckpt"
-                ) for n in range(trainer.max_epochs - cfg.model.avg_ckpts, trainer.max_epochs)
+                )
+                for n in range(
+                    trainer.max_epochs - cfg.model.avg_ckpts, trainer.max_epochs
+                )
             ]
             avg = average_checkpoints(last)
 
             model_path = os.path.join(
-                cfg.checkpoint.dirpath, cfg.experiment_name, f"model_avg_{cfg.model.avg_ckpts}.pth"
+                cfg.checkpoint.dirpath,
+                cfg.experiment_name,
+                f"model_avg_{cfg.model.avg_ckpts}.pth",
             )
             torch.save(avg, model_path)
 
@@ -87,7 +94,7 @@ def main(cfg):
                 learner = Learner(cfg)
                 trainer = Trainer(**cfg.trainer, logger=wandb_logger, strategy=None)
                 trainer.test(learner, datamodule=data_module)
-        
+
     else:
         trainer.test(learner, datamodule=data_module)
 

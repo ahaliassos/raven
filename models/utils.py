@@ -9,7 +9,7 @@ class Lambda(nn.Module):
 
     def forward(self, x):
         return self.func(x)
-    
+
 
 def set_requires_grad(model, val):
     for p in model.parameters():

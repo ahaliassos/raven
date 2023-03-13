@@ -489,7 +489,9 @@ def rename_state_dict(
 def get_activation(act):
     """Return activation function."""
     # Lazy load to avoid unused import
-    from Visual_Speech_Recognition_for_Multiple_Languages.espnet.nets.pytorch_backend.conformer.swish import Swish
+    from Visual_Speech_Recognition_for_Multiple_Languages.espnet.nets.pytorch_backend.conformer.swish import (
+        Swish,
+    )
 
     activation_funcs = {
         "hardtanh": torch.nn.Hardtanh,

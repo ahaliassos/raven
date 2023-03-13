@@ -15,11 +15,15 @@ from espnet.nets.pytorch_backend.transformer.norm import LayerNorm, BatchNorm1d
 
 
 # Taken from https://github.com/rwightman/pytorch-image-models/blob/f670d98cb8ec70ed6e03b4be60a18faf4dc913b5/timm/models/layers/drop.py#L157
-def drop_path(x, drop_prob: float = 0., training: bool = False, scale_by_keep: bool = True):
-    if drop_prob == 0. or not training:
+def drop_path(
+    x, drop_prob: float = 0.0, training: bool = False, scale_by_keep: bool = True
+):
+    if drop_prob == 0.0 or not training:
         return x
     keep_prob = 1 - drop_prob
-    shape = (x.shape[0],) + (1,) * (x.ndim - 1)  # work with diff dim tensors, not just 2D ConvNets
+    shape = (x.shape[0],) + (1,) * (
+        x.ndim - 1
+    )  # work with diff dim tensors, not just 2D ConvNets
     random_tensor = x.new_empty(shape).bernoulli_(keep_prob)
     if keep_prob > 0.0 and scale_by_keep:
         random_tensor.div_(keep_prob)
@@ -27,7 +31,7 @@ def drop_path(x, drop_prob: float = 0., training: bool = False, scale_by_keep: b
 
 
 class DropPath(nn.Module):
-    def __init__(self, drop_prob: float = 0., scale_by_keep: bool = True):
+    def __init__(self, drop_prob: float = 0.0, scale_by_keep: bool = True):
         super(DropPath, self).__init__()
         self.drop_prob = drop_prob
         self.scale_by_keep = scale_by_keep
@@ -70,10 +74,10 @@ class EncoderLayer(nn.Module):
         concat_after=False,
         macaron_style=False,
         layerscale=False,
-        init_values=0.,
+        init_values=0.0,
         ff_bn_pre=False,
         post_norm=True,
-        drop_path=0.,
+        drop_path=0.0,
     ):
         """Construct an EncoderLayer object."""
         super(EncoderLayer, self).__init__()
@@ -82,7 +86,9 @@ class EncoderLayer(nn.Module):
         self.ff_scale = 1.0
         self.conv_module = conv_module
         self.macaron_style = macaron_style
-        self.norm_ff = BatchNorm1d(size) if ff_bn_pre else LayerNorm(size)  # for the FNN module
+        self.norm_ff = (
+            BatchNorm1d(size) if ff_bn_pre else LayerNorm(size)
+        )  # for the FNN module
         self.norm_mha = LayerNorm(size)  # for the MHA module
         if self.macaron_style:
             self.feed_forward_macaron = copy.deepcopy(feed_forward)
@@ -90,7 +96,9 @@ class EncoderLayer(nn.Module):
             # for another FNN module in macaron style
             self.norm_ff_macaron = BatchNorm1d(size) if ff_bn_pre else LayerNorm(size)
         if self.conv_module is not None:
-            self.norm_conv = BatchNorm1d(size) if ff_bn_pre else LayerNorm(size)  # for the CNN module
+            self.norm_conv = (
+                BatchNorm1d(size) if ff_bn_pre else LayerNorm(size)
+            )  # for the CNN module
             if post_norm:
                 self.norm_final = LayerNorm(size)  # for the final output of the block
         self.dropout = nn.Dropout(dropout_rate)
@@ -103,13 +111,21 @@ class EncoderLayer(nn.Module):
         self.post_norm = post_norm
         self.layerscale = layerscale
         if layerscale:
-            self.gamma_ff = nn.Parameter(init_values * torch.ones((size,)), requires_grad=True)
-            self.gamma_mha = nn.Parameter(init_values * torch.ones((size,)), requires_grad=True)
+            self.gamma_ff = nn.Parameter(
+                init_values * torch.ones((size,)), requires_grad=True
+            )
+            self.gamma_mha = nn.Parameter(
+                init_values * torch.ones((size,)), requires_grad=True
+            )
             if self.macaron_style:
-                self.gamma_ff_macaron = nn.Parameter(init_values * torch.ones((size,)), requires_grad=True)
+                self.gamma_ff_macaron = nn.Parameter(
+                    init_values * torch.ones((size,)), requires_grad=True
+                )
             if self.conv_module is not None:
-                self.gamma_conv = nn.Parameter(init_values * torch.ones((size,)), requires_grad=True)
-        self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
+                self.gamma_conv = nn.Parameter(
+                    init_values * torch.ones((size,)), requires_grad=True
+                )
+        self.drop_path = DropPath(drop_path) if drop_path > 0.0 else nn.Identity()
 
     def forward(self, x_input, mask, cache=None):
         """Compute encoded features.
@@ -135,7 +151,8 @@ class EncoderLayer(nn.Module):
                     x = x.transpose(1, 2)
             if self.layerscale:
                 x = residual + self.drop_path(
-                    self.ff_scale * self.dropout(self.gamma_ff_macaron * self.feed_forward_macaron(x))
+                    self.ff_scale
+                    * self.dropout(self.gamma_ff_macaron * self.feed_forward_macaron(x))
                 )
             else:
                 x = residual + self.drop_path(
@@ -169,7 +186,9 @@ class EncoderLayer(nn.Module):
         if self.concat_after:
             x_concat = torch.cat((x, x_att), dim=-1)
             if self.layerscale:
-                x = residual + self.drop_path(self.gamma_mha * self.concat_linear(x_concat))
+                x = residual + self.drop_path(
+                    self.gamma_mha * self.concat_linear(x_concat)
+                )
             else:
                 x = residual + self.drop_path(self.concat_linear(x_concat))
         else:
@@ -190,7 +209,9 @@ class EncoderLayer(nn.Module):
                 if self.ff_bn_pre:
                     x = x.transpose(1, 2)
             if self.layerscale:
-                x = residual + self.drop_path(self.dropout(self.gamma_conv * self.conv_module(x)))
+                x = residual + self.drop_path(
+                    self.dropout(self.gamma_conv * self.conv_module(x))
+                )
             else:
                 x = residual + self.drop_path(self.dropout(self.conv_module(x)))
             if not self.normalize_before:
@@ -209,9 +230,13 @@ class EncoderLayer(nn.Module):
             if self.ff_bn_pre:
                 x = x.transpose(1, 2)
         if self.layerscale:
-            x = residual + self.drop_path(self.ff_scale * self.dropout(self.gamma_ff * self.feed_forward(x)))
+            x = residual + self.drop_path(
+                self.ff_scale * self.dropout(self.gamma_ff * self.feed_forward(x))
+            )
         else:
-            x = residual + self.drop_path(self.ff_scale * self.dropout(self.feed_forward(x)))
+            x = residual + self.drop_path(
+                self.ff_scale * self.dropout(self.feed_forward(x))
+            )
         if not self.normalize_before:
             if self.ff_bn_pre:
                 x = x.transpose(1, 2)

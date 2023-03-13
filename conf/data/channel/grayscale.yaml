@@ -5,4 +5,3 @@ obj:
   std:
     - 0.165
 in_video_channels: 1
-grayscale_prob: 0.0

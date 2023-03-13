@@ -19,12 +19,10 @@ class ByFrameCountSampler(Sampler):
         self.epoch = 0
 
         batch_indices = data_utils.batch_by_size(
-            self._get_indices(), 
-            lambda i: self.sizes[i], 
-            max_tokens=max_frames_per_gpu
+            self._get_indices(), lambda i: self.sizes[i], max_tokens=max_frames_per_gpu
         )
         self.num_batches = len(batch_indices)
-    
+
     def _get_indices(self):
         if self.shuffle:  # Shuffles indices corresponding to equal lengths
             g = torch.Generator()
@@ -34,18 +32,18 @@ class ByFrameCountSampler(Sampler):
             order = [list(range(len(self.dataset)))]
         order.append(self.sizes)
         return np.lexsort(order)[::-1]
-    
+
     def __len__(self):
         return self.num_batches
 
     def __iter__(self):
         batch_indices = data_utils.batch_by_size(
-            self._get_indices(), 
-            lambda i: self.sizes[i], 
-            max_tokens=self.max_frames_per_gpu
+            self._get_indices(),
+            lambda i: self.sizes[i],
+            max_tokens=self.max_frames_per_gpu,
         )
         return iter(batch_indices)
-    
+
     def set_epoch(self, epoch):
         self.epoch = epoch
 
@@ -112,7 +110,11 @@ class DistributedSamplerWrapper(DistributedSampler):
                 sampler will shuffle the indices
         """
         super(DistributedSamplerWrapper, self).__init__(
-            DatasetFromSampler(sampler), num_replicas=num_replicas, rank=rank, shuffle=shuffle, drop_last=drop_last
+            DatasetFromSampler(sampler),
+            num_replicas=num_replicas,
+            rank=rank,
+            shuffle=shuffle,
+            drop_last=drop_last,
         )
         self.sampler = sampler
 

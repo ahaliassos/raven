@@ -100,7 +100,7 @@ class BatchBeamSearch(BeamSearch):
         # Because of the flatten above, `top_ids` is organized as:
         # [hyp1 * V + token1, hyp2 * V + token2, ..., hypK * V + tokenK],
         # where V is `self.n_vocab` and K is `self.beam_size`
-        prev_hyp_ids = torch.div(top_ids, self.n_vocab, rounding_mode='trunc')
+        prev_hyp_ids = torch.div(top_ids, self.n_vocab, rounding_mode="trunc")
         new_token_ids = top_ids % self.n_vocab
         return prev_hyp_ids, new_token_ids, prev_hyp_ids, new_token_ids
 

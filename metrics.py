@@ -13,9 +13,9 @@ def get_cer(s, ref):
 
 def get_er(s, ref):
     """
-        FROM wikipedia levenshtein distance
-        s: list of words/char in sentence to measure
-        ref: list of words/char in reference
+    FROM wikipedia levenshtein distance
+    s: list of words/char in sentence to measure
+    ref: list of words/char in reference
     """
 
     costs = np.zeros((len(s) + 1, len(ref) + 1))
@@ -27,17 +27,15 @@ def get_er(s, ref):
     for j in range(1, len(ref) + 1):
         for i in range(1, len(s) + 1):
             cost = None
-            if s[i-1] == ref[j-1]:
+            if s[i - 1] == ref[j - 1]:
                 cost = 0
             else:
                 cost = 1
-            costs[i,j] = min(
-                costs[i-1, j] + 1,
-                costs[i, j-1] + 1,
-                costs[i-1, j-1] + cost
+            costs[i, j] = min(
+                costs[i - 1, j] + 1, costs[i, j - 1] + 1, costs[i - 1, j - 1] + cost
             )
 
-    return costs[-1,-1] / len(ref)
+    return costs[-1, -1] / len(ref)
 
 
 class WER(Metric):
@@ -47,7 +45,7 @@ class WER(Metric):
         # state from multiple processes
         super().__init__(dist_sync_on_step=dist_sync_on_step)
 
-        self.add_state("error", default=torch.tensor(0.), dist_reduce_fx="sum")
+        self.add_state("error", default=torch.tensor(0.0), dist_reduce_fx="sum")
         self.add_state("total", default=torch.tensor(0), dist_reduce_fx="sum")
 
     def update(self, preds, target):

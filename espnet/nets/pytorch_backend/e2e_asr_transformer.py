@@ -86,7 +86,9 @@ class E2E(torch.nn.Module):
             positional_dropout_rate=args.dropout_rate,
             self_attention_dropout_rate=args.transformer_attn_dropout_rate,
             src_attention_dropout_rate=args.transformer_attn_dropout_rate,
-            proj_decoder=torch.nn.Linear(args.adim, args.ddim) if args.adim != args.ddim else None,
+            proj_decoder=torch.nn.Linear(args.adim, args.ddim)
+            if args.adim != args.ddim
+            else None,
         )
 
         self.blank = 0
@@ -103,7 +105,7 @@ class E2E(torch.nn.Module):
             args.transformer_length_normalized_loss,
         )
         self.mtlalpha = args.mtlalpha
-    
+
     def scorers(self):
         """Scorers."""
         return dict(decoder=self.decoder, ctc=CTCPrefixScorer(self.ctc, self.eos))

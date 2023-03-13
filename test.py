@@ -25,8 +25,8 @@ def main(cfg):
     cfg.slurm_job_id = os.environ["SLURM_JOB_ID"]
 
     cfg.gpus = torch.cuda.device_count()
-    print('num gpus:', cfg.gpus)
-    
+    print("num gpus:", cfg.gpus)
+
     wandb_logger = None
     if cfg.log_wandb:
         wandb_logger = instantiate(cfg.logger)
@@ -37,7 +37,7 @@ def main(cfg):
     trainer = Trainer(
         **cfg.trainer,
         logger=wandb_logger,
-        strategy = DDPPlugin(find_unused_parameters=False) if cfg.gpus > 1 else None
+        strategy=DDPPlugin(find_unused_parameters=False) if cfg.gpus > 1 else None
     )
 
     trainer.test(learner, datamodule=data_module)

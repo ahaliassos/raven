@@ -1,4 +1,5 @@
 defaults:
+  - _self_
   - paths: default
 sample_rate: 16000
 fps: 25

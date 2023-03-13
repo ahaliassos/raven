@@ -29,7 +29,6 @@ class Learner(LightningModule):
         self.beam_search = self.get_beam_search(self.model)
         self.wer = WER()
 
-    
     def load_model(self):
         if self.cfg.data.labels_type == "unigram1000":
             odim = len(UNIGRAM1000_LIST)
@@ -40,9 +39,12 @@ class Learner(LightningModule):
 
         if self.cfg.model.pretrained_model_path:
             print("Load pretrained model weights")
-            ckpt = torch.load(self.cfg.model.pretrained_model_path, map_location=lambda storage, loc: storage)
+            ckpt = torch.load(
+                self.cfg.model.pretrained_model_path,
+                map_location=lambda storage, loc: storage,
+            )
             model.load_state_dict(ckpt)
-            
+
         return model
 
     def get_beam_search(self, model):
@@ -87,7 +89,7 @@ class Learner(LightningModule):
 
     def forward(self, model, data, padding_mask, lengths, label):
         return model(data, padding_mask, lengths, label=label)
-    
+
     def calculate_wer(self, data, padding_mask, labels):
         labels = labels.squeeze(1)
         data = data.squeeze(1)
@@ -98,16 +100,14 @@ class Learner(LightningModule):
 
             if isinstance(self.beam_search, BatchBeamSearch):
                 nbest_hyps = self.beam_search(
-                        x=feat.squeeze(0),
-                        maxlenratio=self.cfg.decode.maxlenratio,
-                        minlenratio=self.cfg.decode.minlenratio
-                    )
+                    x=feat.squeeze(0),
+                    maxlenratio=self.cfg.decode.maxlenratio,
+                    minlenratio=self.cfg.decode.minlenratio,
+                )
             else:
                 raise NotImplementedError
- 
-            nbest_hyps = [
-                h.asdict() for h in nbest_hyps[: min(len(nbest_hyps), 1)]
-            ]
+
+            nbest_hyps = [h.asdict() for h in nbest_hyps[: min(len(nbest_hyps), 1)]]
             transcription = add_results_to_json(nbest_hyps, self.token_list)
             transcription = transcription.replace("<eos>", "")
 
@@ -129,4 +129,3 @@ class Learner(LightningModule):
         print(wer)
         self.log("wer", wer)
         self.wer.reset()
-            

@@ -9,7 +9,8 @@
 import torch
 
 from espnet.nets.pytorch_backend.nets_utils import rename_state_dict
-#from espnet.nets.pytorch_backend.transducer.vgg import VGG2L
+
+# from espnet.nets.pytorch_backend.transducer.vgg import VGG2L
 from espnet.nets.pytorch_backend.transformer.attention import (
     MultiHeadedAttention,  # noqa: H301
     RelPositionMultiHeadedAttention,  # noqa: H301
@@ -19,7 +20,7 @@ from espnet.nets.pytorch_backend.transformer.convolution import ConvolutionModul
 from espnet.nets.pytorch_backend.transformer.embedding import (
     PositionalEncoding,  # noqa: H301
     RelPositionalEncoding,  # noqa: H301
-    LegacyRelPositionalEncoding, # noqa: H301
+    LegacyRelPositionalEncoding,  # noqa: H301
     MaskEmbedding,
 )
 from espnet.nets.pytorch_backend.transformer.encoder_layer import EncoderLayer
@@ -30,8 +31,8 @@ from espnet.nets.pytorch_backend.transformer.positionwise_feed_forward import (
     PositionwiseFeedForward,  # noqa: H301
 )
 from espnet.nets.pytorch_backend.transformer.repeat import repeat
-from espnet.nets.pytorch_backend.backbones.conv3d_extractor  import Conv3dResNet
-from espnet.nets.pytorch_backend.backbones.conv1d_extractor  import Conv1dResNet
+from espnet.nets.pytorch_backend.backbones.conv3d_extractor import Conv3dResNet
+from espnet.nets.pytorch_backend.backbones.conv1d_extractor import Conv1dResNet
 
 
 def _pre_hook(
@@ -128,7 +129,7 @@ class Encoder(torch.nn.Module):
             self.frontend = Conv1dResNet(
                 relu_type=relu_type,
                 a_upsample_ratio=a_upsample_ratio,
-                gamma_zero=gamma_zero, 
+                gamma_zero=gamma_zero,
                 gamma_init=gamma_init,
             )
         elif frontend == "conv3d":
@@ -155,19 +156,20 @@ class Encoder(torch.nn.Module):
             )
         elif isinstance(input_layer, torch.nn.Module):
             self.embed = torch.nn.Sequential(
-                input_layer, pos_enc_class(attention_dim, positional_dropout_rate),
+                input_layer,
+                pos_enc_class(attention_dim, positional_dropout_rate),
             )
         elif input_layer == "vanilla_linear":
             self.embed = torch.nn.Sequential(
                 torch.nn.Linear(idim, attention_dim),
-                pos_enc_class(attention_dim, positional_dropout_rate)
+                pos_enc_class(attention_dim, positional_dropout_rate),
             )
         elif input_layer == "token_embed":
             self.embed = MaskEmbedding(
-                idim, 
-                attention_dim, 
-                pos_enc_class(attention_dim, positional_dropout_rate), 
-                init_type=mask_init_type, 
+                idim,
+                attention_dim,
+                pos_enc_class(attention_dim, positional_dropout_rate),
+                init_type=mask_init_type,
                 std_init=mask_std_init,
             )
         elif input_layer is None:
@@ -248,10 +250,12 @@ class Encoder(torch.nn.Module):
         self.after_norm = None
         if self.normalize_before and last_norm:
             self.after_norm = LayerNorm(attention_dim)
-        
+
         self.last_linear = torch.nn.Linear(attention_dim, odim) if last_linear else None
 
-    def forward(self, xs, masks, token_mask=None, extract_resnet_feats=False, return_feats=None):
+    def forward(
+        self, xs, masks, token_mask=None, extract_resnet_feats=False, return_feats=None
+    ):
         """Encode input sequence.
 
         :param torch.Tensor xs: input tensor
@@ -281,7 +285,7 @@ class Encoder(torch.nn.Module):
                         feat = xs
                     feats.append(feat)
             return torch.stack(feats)
-        
+
         xs, masks = self.encoders(xs, masks)
 
         if isinstance(xs, tuple):
@@ -289,7 +293,7 @@ class Encoder(torch.nn.Module):
 
         if self.after_norm:
             xs = self.after_norm(xs)
-        
+
         if self.last_linear:
             xs = self.last_linear(xs)
 
@@ -316,7 +320,7 @@ class Encoder(torch.nn.Module):
             new_cache.append(xs)
         if self.after_norm:
             xs = self.after_norm(xs)
-        
+
         if self.last_linear:
             xs = self.last_linear(xs)
 

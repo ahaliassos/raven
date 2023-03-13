@@ -218,19 +218,21 @@ class RelPositionalEncoding(torch.nn.Module):
 
 
 class MaskEmbedding(torch.nn.Module):
-    def __init__(self, idim, odim, pos_enc_class, init_type='normal', std_init=0.02):
+    def __init__(self, idim, odim, pos_enc_class, init_type="normal", std_init=0.02):
         super(MaskEmbedding, self).__init__()
         self.linear = torch.nn.Linear(idim, odim)
-        if init_type == 'normal':
+        if init_type == "normal":
             self.mask_emb = torch.nn.Parameter(torch.zeros(odim))
             torch.nn.init.normal_(self.mask_emb, std=std_init)
-        elif init_type == 'uniform':
+        elif init_type == "uniform":
             self.mask_emb = torch.nn.Parameter(torch.FloatTensor(odim).uniform_())
         else:
             raise NotImplementedError
         self.pos_enc_class = pos_enc_class
-    
+
     def forward(self, x, mask):
         x = self.linear(x)
-        x = self.mask_emb.unsqueeze(0).unsqueeze(0)*mask.unsqueeze(-1) + x*(~mask.unsqueeze(-1))
+        x = self.mask_emb.unsqueeze(0).unsqueeze(0) * mask.unsqueeze(-1) + x * (
+            ~mask.unsqueeze(-1)
+        )
         return self.pos_enc_class(x)

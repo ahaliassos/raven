@@ -3,7 +3,18 @@ import os
 import torch
 
 
-UNIGRAM1000_LIST = ['<blank>'] + [_.split()[0] for _ in open(os.path.join(os.path.dirname(__file__), "labels", "unigram1000_units.txt")).read().splitlines()] + ['<eos>']
+UNIGRAM1000_LIST = (
+    ["<blank>"]
+    + [
+        _.split()[0]
+        for _ in open(
+            os.path.join(os.path.dirname(__file__), "labels", "unigram1000_units.txt")
+        )
+        .read()
+        .splitlines()
+    ]
+    + ["<eos>"]
+)
 
 
 # Writes list of objects (anything that can be converted to str) to a txt file, separated by "\n"s
@@ -23,7 +34,7 @@ def ids_to_str(token_ids, char_list):
 def set_requires_grad(model, val):
     for p in model.parameters():
         p.requires_grad = val
-        
+
 
 def average_checkpoints(last):
     avg = None
@@ -46,14 +57,24 @@ def average_checkpoints(last):
     return avg
 
 
-def get_param_groups(model, num_blocks, base_lr_enc, base_lr_other, lr_decay_rate, ctc_equals_other=True, min_lr=1e-6):
+def get_param_groups(
+    model,
+    num_blocks,
+    base_lr_enc,
+    base_lr_other,
+    lr_decay_rate,
+    ctc_equals_other=True,
+    min_lr=1e-6,
+):
     param_groups = {}
-    layer_scales = list(lr_decay_rate ** (num_blocks - i - 1) for i in range(num_blocks))
-    
+    layer_scales = list(
+        lr_decay_rate ** (num_blocks - i - 1) for i in range(num_blocks)
+    )
+
     for name, param in model.named_parameters():
         if not param.requires_grad:
             continue
-        
+
         if name.startswith("encoder.after_norm"):
             group_name = "after_norm"
             base_lr = max(base_lr_enc, min_lr)
@@ -69,18 +90,18 @@ def get_param_groups(model, num_blocks, base_lr_enc, base_lr_other, lr_decay_rat
             base_lr = max(layer_scales[group_id] * base_lr_enc, min_lr)
         elif name.startswith("ctc"):
             group_name = "ctc"
-            base_lr = max(base_lr_other, min_lr) if ctc_equals_other else max(base_lr_enc, min_lr)
+            base_lr = (
+                max(base_lr_other, min_lr)
+                if ctc_equals_other
+                else max(base_lr_enc, min_lr)
+            )
         else:
             assert not name.startswith("encoder")
             group_name = "other"
             base_lr = max(base_lr_other, min_lr)
-        
+
         if group_name not in param_groups:
-            param_groups[group_name] = {
-                "name": group_name,
-                "lr": base_lr,
-                "params": []
-            }
+            param_groups[group_name] = {"name": group_name, "lr": base_lr, "params": []}
         param_groups[group_name]["params"].append(param)
-    
+
     return list(param_groups.values())

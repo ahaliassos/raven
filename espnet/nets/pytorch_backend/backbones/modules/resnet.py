@@ -29,14 +29,14 @@ def downsample_basic_block(inplanes, outplanes, stride):
     :param outplanes: int, number of channels produced by the convolution.
     :param stride: int, size of the convolving kernel.
     """
-    return  nn.Sequential(
+    return nn.Sequential(
         nn.Conv2d(
             inplanes,
             outplanes,
             kernel_size=1,
             stride=stride,
             bias=False,
-            ),
+        ),
         nn.BatchNorm2d(outplanes),
     )
 
@@ -82,7 +82,7 @@ class BasicBlock(nn.Module):
 
         self.conv2 = conv3x3(planes, planes)
         self.bn2 = nn.BatchNorm2d(planes)
-        
+
         self.downsample = downsample
         self.stride = stride
 
@@ -107,7 +107,6 @@ class BasicBlock(nn.Module):
 
 
 class ResNet(nn.Module):
-
     def __init__(
         self,
         block,
@@ -132,7 +131,6 @@ class ResNet(nn.Module):
                 if isinstance(m, BasicBlock):
                     nn.init.constant_(m.bn2.weight, gamma_init)
 
-
     def _make_layer(self, block, planes, blocks, stride=1):
         """_make_layer.
 
@@ -145,7 +143,7 @@ class ResNet(nn.Module):
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = self.downsample_block(
                 inplanes=self.inplanes,
-                outplanes=planes*block.expansion,
+                outplanes=planes * block.expansion,
                 stride=stride,
             )
 
