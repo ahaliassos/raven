@@ -8,12 +8,6 @@
 #SBATCH --time=00:00:00
 #SBATCH --account all
 #SBATCH --no-requeue
-#SBATCH --output=/fsx/andreaszinonos/Other_Repos/BYOLAV/output/slurm/slurm-%j.out
-
-export NCCL_NSOCKS_PERTHREAD=4
-export NCCL_SOCKET_NTHREADS=2
-export NCCL_SOCKET_IFNAME=ens32
-export HYDRA_FULL_ERROR=1
 
 srun python raven/test.py \
     data.modality=audio \

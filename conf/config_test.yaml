@@ -1,6 +1,5 @@
 defaults:
   - _self_
-  - checkpoint: last_k
   - data: finetune
   - logger: default
   - logging: default
@@ -11,7 +10,7 @@ hydra:
   output_subdir: null  
   run:  
     dir: .
-project_name: vsr_asr_multigpu
+project_name: raven_test
 experiment_name:
 num_workers: 8
 fix_seed: True

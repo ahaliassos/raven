@@ -20,9 +20,9 @@ We provide code for the reproduction of the main results in [Jointly Learning Vi
     ``` 
 
 ## Testing
-* Below are the checkpoints corresponding to Tables 1 and 2 for VSR and ASR on LRS3. Models are provided for both low- and high-resource labelled data settings. In the high-resource setting, the models are fine-tuned on the full LRS3 dataset (433 hours), and the low-resource they are fine-tuned on a subset ("trainval") of LRS3 (30 hours). 
+* Below are the checkpoints corresponding to Tables 1 and 2 for VSR and ASR on LRS3. Models are provided for both low- and high-resource labelled data settings. In the high-resource setting, the models are fine-tuned on the full LRS3 dataset (433 hours). In the low-resource setting, they are fine-tuned on a subset ("trainval") of LRS3 (30 hours). 
 
-* In some cases, the models were re-trained so the WER may differ slightly from the ones shown in the paper and reproduced below.
+* In some cases, the models were re-trained so the WER may differ slightly from the ones shown in the paper (which are also reproduced below).
 
 * The paths for the slurm bash scripts used for inference are shown in the table below. Note that the scripts may need to be modified according to the cluster environment. 
 
@@ -65,6 +65,8 @@ We provide code for the reproduction of the main results in [Jointly Learning Vi
 |       Large      |     LRS3+Vox2-en     |   1.4   | [Download](https://drive.google.com/file/d/1vqUAhnR_4riYWlVOMGX5XDpGvMpzW_pe/view?usp=sharing) | scripts/asr/lrs3/large_lrs3vox2.sh         |
 |    Large w/ ST   |     LRS3+Vox2-en     |   1.4   | [Download](https://drive.google.com/file/d/1E-IPTZDX4I_YZuYbgSh4L4E7tJrUuQE8/view?usp=sharing) | scripts/asr/lrs3/large_lrs3vox2_self.sh    |
 | Large w/ ST + LM |     LRS3+Vox2-en     |   1.4   |                                        same as last row                                        | scripts/asr/lrs3/large_lrs3vox2_self_lm.sh |
+
+Code for pre-training and fine-tuning coming soon...
 
 ## Citation
 If you find this repo useful for your research, please consider citing the following:
