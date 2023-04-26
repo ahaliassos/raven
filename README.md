@@ -19,6 +19,16 @@ We provide code for the reproduction of the main results in [Jointly Learning Vi
     python preprocessing/extract_mouths.py --src_dir ${SOURCE_DIR} --tgt_dir ${TARGET_DIR} --landmarks_dir ${LANDMARKS_DIR}
     ``` 
 
+## RAVEn pre-trained models
+Below are the checkpoints of the Base and Large models pre-trained with RAVEn on **LRS3+Vox2-en**.
+
+| Model | Modality |                                           Checkpoint                                           |
+|:-----:|----------|:----------------------------------------------------------------------------------------------:|
+|  Base | Video    | [Download](https://drive.google.com/file/d/14Iz3l1I0NjNKT3kI4uptCk4rNkyDoU2N/view?usp=sharing) |
+|  Base | Audio    | [Download](https://drive.google.com/file/d/19yoKn58g37x1o_oo-zko_dg27N8-bVIJ/view?usp=sharing) |
+| Large | Video    | [Download](https://drive.google.com/file/d/1wKqUIyhkzqlfmdF1zHrEizQtX2NQfjHC/view?usp=sharing) |
+| Large | Audio    | [Download](https://drive.google.com/file/d/1hBa1QTbDDjFcK8E92s-6gA4chEc2WnaE/view?usp=sharing) | 
+
 ## Testing
 * Below are the checkpoints corresponding to Tables 1 and 2 for VSR and ASR on LRS3. Models are provided for both low- and high-resource labelled data settings. In the high-resource setting, the models are fine-tuned on the full LRS3 dataset (433 hours). In the low-resource setting, they are fine-tuned on a subset ("trainval") of LRS3 (30 hours). 
 
