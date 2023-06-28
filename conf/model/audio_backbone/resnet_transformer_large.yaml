@@ -14,10 +14,10 @@ cnn_module_kernel: 31
 zero_triu: False
 a_upsample_ratio: 1
 relu_type: swish
-ddim: 256
-dheads: 4
-dunits: 2048
-dlayers: 6
+ddim: ${model.audio_backbone.adim}
+dheads: ${model.audio_backbone.aheads}
+dunits: ${model.audio_backbone.eunits}
+dlayers: 9
 lsm_weight: 0.1
 transformer_length_normalized_loss: False
 rel_pos_type: latest

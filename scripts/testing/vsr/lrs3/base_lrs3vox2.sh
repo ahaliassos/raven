@@ -14,8 +14,4 @@ srun python raven/test.py \
     data/dataset=lrs3 \
     experiment_name=vsr_prelrs3vox2_base_ftlrs3_test \
     model/visual_backbone=resnet_transformer_base \
-    model.visual_backbone.ddim=256 \
-    model.visual_backbone.dheads=4 \
-    model.visual_backbone.dunits=2048 \
-    model.visual_backbone.dlayers=6 \
     model.pretrained_model_path=ckpts/vsr_prelrs3vox2_base_ftlrs3.pth \

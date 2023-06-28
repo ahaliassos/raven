@@ -14,10 +14,6 @@ srun python raven/test.py \
     data/dataset=lrs3_trainval \
     experiment_name=asr_prelrs3vox2_large_ftlrs3trainval_selftrain_lm_test \
     model/visual_backbone=resnet_transformer_large \
-    model.visual_backbone.ddim=256 \
-    model.visual_backbone.dheads=4 \
-    model.visual_backbone.dunits=2048 \
-    model.visual_backbone.dlayers=6 \
     model.pretrained_model_path=ckpts/asr_prelrs3vox2_large_ftlrs3trainval_selftrain.pth \
     decode.lm_weight=0.3 \
     model.pretrained_lm_path=ckpts/language_model/rnnlm.model.best
