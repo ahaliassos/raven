@@ -53,7 +53,7 @@ Below are the checkpoints of the Base and Large models pre-trained with RAVEn on
 |       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                |
 |:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|--------------------------------------------|
 |       Base       |         LRS3         |   39.1  | [Download](https://drive.google.com/file/d/18uqnWgtVfqIFHCvEp0k6mGOWf7O6dDge/view?usp=sharing) | scripts/vsr/lrs3/base_lrs3.sh              |
-|       Base       |     LRS3+Vox2-en     |   33.1  | [Download](https://drive.google.com/file/d/1qc2U5ah1NFaO94caRnsA4kOEHTJ3_P99/view?usp=sharing) | scripts/vsr/lrs3/base_lrs3vox2.sh          |
+|       Base       |     LRS3+Vox2-en     |   33.1  | [Download](https://drive.google.com/file/d/197pP1ie8pgELIzlFNZdVqQqfpsf9o7RB/view?usp=sharing) | scripts/vsr/lrs3/base_lrs3vox2.sh          |
 |       Large      |     LRS3+Vox2-en     |   27.8  | [Download](https://drive.google.com/file/d/1OQZWjDYjQoApjrF3s2INsQSiS4XPXUu_/view?usp=sharing) | scripts/vsr/lrs3/large_lrs3vox2.sh         |
 |    Large w/ ST   |     LRS3+Vox2-en     |   24.4  | [Download](https://drive.google.com/file/d/1tNZn_BvAVdoIIv6G14_9PvpQtsp6XSOt/view?usp=sharing) | scripts/vsr/lrs3/large_lrs3vox2_self.sh    |
 | Large w/ ST + LM |     LRS3+Vox2-en     |   23.1  |                                        same as last row                                        | scripts/vsr/lrs3/large_lrs3vox2_self_lm.sh |
