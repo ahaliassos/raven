@@ -12,6 +12,10 @@
 srun python raven/test.py \
     data.modality=audio \
     data/dataset=lrs3_trainval \
-    experiment_name=asr_prelrs3vox2_large_ftlrs3trainvalvox2_selftrain_test \
+    experiment_name=asr_prelrs3vox2avs_large_ftlrs3trainval_braven_test \
     model/visual_backbone=resnet_transformer_large \
-    model.pretrained_model_path=ckpts/asr_prelrs3vox2_large_ftlrs3trainvalvox2_selftrain.pth \
+    model.visual_backbone.ddim=256 \
+    model.visual_backbone.dheads=4 \
+    model.visual_backbone.dunits=2048 \
+    model.visual_backbone.dlayers=6 \
+    model.pretrained_model_path=ckpts/asr_prelrs3vox2avs_large_ftlrs3trainval_braven.pth \

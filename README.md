@@ -1,7 +1,7 @@
-# RAVEn: A PyTorch Lightning Implementation
-![Overview](overview.png)
+# (B)RAVEn: A PyTorch Lightning Implementation
 ## Introduction
-We provide code for the reproduction of the main results in [Jointly Learning Visual and Auditory Speech Representations from Raw Data](https://arxiv.org/abs/2212.06246). Our implementation is based on 
+We provide code for the reproduction of the main results in [Jointly Learning Visual and Auditory Speech Representations from Raw Data](https://arxiv.org/abs/2212.06246) and [BRAVEn: Improving Self-Supervised Pre-training for Visual and Auditory Speech Recognition
+](https://arxiv.org/abs/2404.02098). Our implementation is based on 
 [PyTorch Lightning](https://www.pytorchlightning.ai/). 
 
 ## Preparation
@@ -39,7 +39,7 @@ Below are the checkpoints of the Base and Large models pre-trained with RAVEn on
 * The language model we used in this work can be found [here](https://drive.google.com/file/d/1mTeynSf6Sryh_mnVabpw-UwTRrh-mDc1/view?usp=sharing). 
 
 ### VSR
-#### Low-resource
+#### RAVEn low-resource
 
 |       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                         |
 |:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|-----------------------------------------------------|
@@ -49,7 +49,18 @@ Below are the checkpoints of the Base and Large models pre-trained with RAVEn on
 |    Large w/ ST   |     LRS3+Vox2-en     |   24.8  | [Download](https://drive.google.com/file/d/1MXQGVmSM0GeHQA5iy9Y-CJFqtJzS0wQu/view?usp=sharing) | scripts/vsr/lrs3_trainval/large_lrs3vox2_self.sh    |
 | Large w/ ST + LM |     LRS3+Vox2-en     |   23.8  |                                        same as last row                                        | scripts/vsr/lrs3_trainval/large_lrs3vox2_self_lm.sh |
 
-#### High-resource
+#### BRAVEn low-resource
+
+|       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                         |
+|:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|-----------------------------------------------------|
+|    Base          |         LRS3         |   43.4  | [Download](https://drive.google.com/file/d/1ui0vFdkt6FAoDFmlGf5AgGNRL4XyXczD/view?usp=sharing)     | scripts/vsr/lrs3_trainval/base_lrs3_braven.sh              |
+|    Base Plus     |     LRS3+Vox2-en     |   35.1  | [Download](https://drive.google.com/file/d/1GO-TpphYZZy4KfGzlwy-2Yw7ng98JKpx/view?usp=sharing)     | scripts/vsr/lrs3_trainval/baseplus_lrs3vox2_braven.sh      |
+|    Large         |     LRS3+Vox2-en     |   30.8  | [Download](https://drive.google.com/file/d/1Cvb1VUyWFew8wggY558liAH-PRXzDfh6/view?usp=sharing)     | scripts/vsr/lrs3_trainval/large_lrs3vox2_braven.sh         |
+|    Large         |     LRS3+Vox2-en+AVS |   24.8  | [Download](https://drive.google.com/file/d/1GiSlZwTcCr5ZrZdntOqubZrdcsH7shel/view?usp=sharing)     | scripts/vsr/lrs3_trainval/large_lrs3vox2avs_braven.sh      |
+|    Large w/ ST   |     LRS3+Vox2-en+AVS |   21.3  | [Download](https://drive.google.com/file/d/1Udk0turivyPLqQpHc6r9H_1X01H6KoTw/view?usp=sharing)     | scripts/vsr/lrs3_trainval/large_lrs3vox2avs_self_braven.sh |
+| Large w/ ST + LM |     LRS3+Vox2-en+AVS |   20.0  | same as last row | scripts/vsr/lrs3_trainval/large_lrs3vox2avs_self_lm_braven.sh |
+
+#### RAVEn high-resource
 |       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                |
 |:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|--------------------------------------------|
 |       Base       |         LRS3         |   39.1  | [Download](https://drive.google.com/file/d/18uqnWgtVfqIFHCvEp0k6mGOWf7O6dDge/view?usp=sharing) | scripts/vsr/lrs3/base_lrs3.sh              |
@@ -57,8 +68,20 @@ Below are the checkpoints of the Base and Large models pre-trained with RAVEn on
 |       Large      |     LRS3+Vox2-en     |   27.8  | [Download](https://drive.google.com/file/d/1OQZWjDYjQoApjrF3s2INsQSiS4XPXUu_/view?usp=sharing) | scripts/vsr/lrs3/large_lrs3vox2.sh         |
 |    Large w/ ST   |     LRS3+Vox2-en     |   24.4  | [Download](https://drive.google.com/file/d/1tNZn_BvAVdoIIv6G14_9PvpQtsp6XSOt/view?usp=sharing) | scripts/vsr/lrs3/large_lrs3vox2_self.sh    |
 | Large w/ ST + LM |     LRS3+Vox2-en     |   23.1  |                                        same as last row                                        | scripts/vsr/lrs3/large_lrs3vox2_self_lm.sh |
+
+#### BRAVEn high-resource
+|       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                |
+|:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|--------------------------------------------|
+|       Base       |         LRS3         |   36.0  | [Download](https://drive.google.com/file/d/1GuAoaG9z29oI3ipRGULz_qMU8yD9NfxH/view?usp=sharing) | scripts/vsr/lrs3/base_lrs3_braven.sh              |
+|       Base Plus  |     LRS3+Vox2-en     |   28.8  | [Download](https://drive.google.com/file/d/1WH6dQ4jQRlhyWKNe5y1BXITDf-PanErm/view?usp=sharing) | scripts/vsr/lrs3/baseplus_lrs3vox2_braven.sh          |
+|       Large      |     LRS3+Vox2-en     |   26.6  | [Download](https://drive.google.com/file/d/1xB8UmJLp21lpuwy0zsvyTcqW2i6XVVby/view?usp=sharing) | scripts/vsr/lrs3/large_lrs3vox2_braven.sh         |
+|       Large      |     LRS3+Vox2-en+AVS |   23.6  | [Download](https://drive.google.com/file/d/1gjHOR-zvavxAMk1vTQmkodDT11jXyeJx/view?usp=sharing) | scripts/vsr/lrs3/large_lrs3vox2avs_braven.sh         |
+|    Large w/ ST   |     LRS3+Vox2-en+AVS |   20.9  | [Download](https://drive.google.com/file/d/1bU-bFxEiXNXNoOLKaAz6_9j7XuE7f_6r/view?usp=sharing) | scripts/vsr/lrs3/large_lrs3vox2avs_self_braven.sh    |
+| Large w/ ST + LM |     LRS3+Vox2-en+AVS |   20.1  |  same as last row   | scripts/vsr/lrs3/large_lrs3vox2avs_self_lm_braven.sh |
+
+
 ### ASR
-#### Low-resource
+#### RAVEn low-resource
 |       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                         |
 |:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|-----------------------------------------------------|
 |       Base       |         LRS3         |   4.7   | [Download](https://drive.google.com/file/d/1UJXGo9qUZ0VxPNlJfL2-JD5_428JqxNv/view?usp=sharing) | scripts/asr/lrs3_trainval/base_lrs3.sh              |
@@ -67,7 +90,17 @@ Below are the checkpoints of the Base and Large models pre-trained with RAVEn on
 |    Large w/ ST   |     LRS3+Vox2-en     |   2.3   | [Download](https://drive.google.com/file/d/1uCycl-je52KuLuEdMnerJYttWtORDGJ-/view?usp=sharing) | scripts/asr/lrs3_trainval/large_lrs3vox2_self.sh    |
 | Large w/ ST + LM |     LRS3+Vox2-en     |   1.9   |                                        same as last row                                        | scripts/asr/lrs3_trainval/large_lrs3vox2_self_lm.sh |
 
-#### High-resource
+#### BRAVEn low-resource
+|       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                         |
+|:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|-----------------------------------------------------|
+|       Base       |         LRS3         |   4.0   | [Download](https://drive.google.com/file/d/10EiQCFSvAip5FUpnLUUqX-Dvyu9dgmYW/view?usp=sharing) | scripts/asr/lrs3_trainval/base_lrs3_braven.sh              |
+|       Base Plus  |     LRS3+Vox2-en     |   3.0   | [Download](https://drive.google.com/file/d/1yXPjsvTasSrFW4irrlrPxbsReynKp0Xg/view?usp=sharing) | scripts/asr/lrs3_trainval/baseplus_lrs3vox2_braven.sh          |
+|       Large      |     LRS3+Vox2-en     |   2.3   | [Download](https://drive.google.com/file/d/1Twt9DN_CioBbhFpZ2fJg7c7mMFY8DtV_/view?usp=sharing) | scripts/asr/lrs3_trainval/large_lrs3vox2_braven.sh         |
+|       Large      |     LRS3+Vox2-en+AVS |   2.1   | [Download](https://drive.google.com/file/d/1CTJAWLJrb0hpfiGeUpB2G8vEn28kegRN/view?usp=sharing) | scripts/asr/lrs3_trainval/large_lrs3vox2avs_braven.sh         |
+|    Large w/ ST   |     LRS3+Vox2-en+AVS |   1.9   | [Download](https://drive.google.com/file/d/1Hq3oxKx-CRF7fuR0WJRBBpRGkO3f11m3/view?usp=sharing) | scripts/asr/lrs3_trainval/large_lrs3vox2avs_self_braven.sh    |
+| Large w/ ST + LM |     LRS3+Vox2-en+AVS |   1.7   | same as last row | scripts/asr/lrs3_trainval/large_lrs3vox2avs_self_lm_braven.sh |
+
+#### RAVEn high-resource
 |       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                         |
 |:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|-----------------------------------------------------|
 |       Base       |         LRS3         |   2.2   | [Download](https://drive.google.com/file/d/1_vyPBj0_cepe467IdtFM1H-WCFaapdBm/view?usp=sharing) | scripts/asr/lrs3/base_lrs3.sh              |
@@ -75,6 +108,17 @@ Below are the checkpoints of the Base and Large models pre-trained with RAVEn on
 |       Large      |     LRS3+Vox2-en     |   1.4   | [Download](https://drive.google.com/file/d/1vqUAhnR_4riYWlVOMGX5XDpGvMpzW_pe/view?usp=sharing) | scripts/asr/lrs3/large_lrs3vox2.sh         |
 |    Large w/ ST   |     LRS3+Vox2-en     |   1.4   | [Download](https://drive.google.com/file/d/1E-IPTZDX4I_YZuYbgSh4L4E7tJrUuQE8/view?usp=sharing) | scripts/asr/lrs3/large_lrs3vox2_self.sh    |
 | Large w/ ST + LM |     LRS3+Vox2-en     |   1.4   |                                        same as last row                                        | scripts/asr/lrs3/large_lrs3vox2_self_lm.sh |
+
+#### BRAVEn high-resource
+|       Model      | Pre-training dataset | WER (%) |                                           Checkpoint                                           | Bash script                                         |
+|:----------------:|:--------------------:|:-------:|:----------------------------------------------------------------------------------------------:|-----------------------------------------------------|
+|       Base       |         LRS3         |   1.9   | [Download](https://drive.google.com/file/d/1RAwSs1FANektUbIY-AoAlRrzTGSTwGhl/view?usp=sharing) | scripts/asr/lrs3/base_lrs3_braven.sh              |
+|       Base Plus  |     LRS3+Vox2-en     |   1.4   | [Download](https://drive.google.com/file/d/1vQCT9V49Qd66EuhbtfrYlbFnE7Vfj02o/view?usp=sharing) | scripts/asr/lrs3/baseplus_lrs3vox2_braven.sh          |
+|       Large      |     LRS3+Vox2-en     |   1.2   | [Download](https://drive.google.com/file/d/12HTqgM09X1XwwepUrpOtgVZ1rj8ToJKm/view?usp=sharing) | scripts/asr/lrs3/large_lrs3vox2_braven.sh         |
+|       Large      |     LRS3+Vox2-en+AVS |   1.2   | [Download](https://drive.google.com/file/d/1J1rUm1pzsOeAWj6yVrmHCNMg_MSQzjFF/view?usp=sharing) | scripts/asr/lrs3/large_lrs3vox2avs_braven.sh         |
+|    Large w/ ST   |     LRS3+Vox2-en+AVS |   1.2   | [Download](https://drive.google.com/file/d/1v_OPL9ZcEGeT8cSgLO5QX16esVFAuzbq/view?usp=sharing) | scripts/asr/lrs3/large_lrs3vox2avs_self_braven.sh    |
+| Large w/ ST + LM |     LRS3+Vox2-en+AVS |   1.1   | same as last row | scripts/asr/lrs3/large_lrs3vox2avs_self_lm_braven.sh |
+
 
 Code for pre-training and fine-tuning coming soon...
 
@@ -86,5 +130,16 @@ If you find this repo useful for your research, please consider citing the follo
   author={Haliassos, Alexandros and Ma, Pingchuan and Mira, Rodrigo and Petridis, Stavros and Pantic, Maja},
   journal={arXiv preprint arXiv:2212.06246},
   year={2022}
+}
+```
+
+```bibtex
+@inproceedings{haliassos2024braven,
+  title={BRAVEn: Improving Self-supervised pre-training for Visual and Auditory Speech Recognition},
+  author={Haliassos, Alexandros and Zinonos, Andreas and Mira, Rodrigo and Petridis, Stavros and Pantic, Maja},
+  booktitle={ICASSP 2024-2024 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  pages={11431--11435},
+  year={2024},
+  organization={IEEE}
 }
 ```

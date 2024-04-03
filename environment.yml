@@ -287,7 +287,7 @@ dependencies:
       - isort==5.12.0
       - itsdangerous==2.1.2
       - jax==0.3.6
-      - jaxlib==0.3.5
+      - jaxlib==0.4.3
       - jedi==0.18.2
       - jinja2==3.1.2
       - jinja2-time==0.2.0
