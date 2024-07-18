@@ -29,6 +29,18 @@ Below are the checkpoints of the Base and Large models pre-trained with RAVEn on
 | Large | Video    | [Download](https://drive.google.com/file/d/1wKqUIyhkzqlfmdF1zHrEizQtX2NQfjHC/view?usp=sharing) |
 | Large | Audio    | [Download](https://drive.google.com/file/d/1hBa1QTbDDjFcK8E92s-6gA4chEc2WnaE/view?usp=sharing) | 
 
+## BRAVEn pre-trained models
+Below are the checkpoints of the Base, Base+, and Large models pre-trained with BRAVEn.
+
+| Model | Modality |                                           Checkpoint                                           |
+|:-----:|----------|:----------------------------------------------------------------------------------------------:|
+|  Base (LRS3) | Video    | [Download](https://drive.google.com/file/d/1H-kgb-mZW-3zv5D04F1wPriLnr4AXzml/view?usp=sharing) |
+|  Base (LRS3) | Audio    | [Download](https://drive.google.com/file/d/1oBvymfK_eUypPofXE5pnkImv3MtJjlxR/view?usp=sharing) |
+| Base+ (LRS3+Vox2) | Video    | [Download](https://drive.google.com/file/d/1dZKw4rZvzvjy92fLLQksk2RI0ubPHRB2/view?usp=sharing) |
+| Base+ (LRS3+Vox2) | Audio    | [Download](https://drive.google.com/file/d/1wxGFcKwXJI7ukGZZdxEsZ6WUlI9K7rTl/view?usp=sharing) | 
+| Large (LRS3+Vox2+AVS) | Video    | [Download](https://drive.google.com/file/d/1QPLgmxXUplqgS5pCcg3s7vUw-d1EzlJr/view?usp=sharing) |
+| Large (LRS3+Vox2+AVS) | Audio    | [Download](https://drive.google.com/file/d/1LZOChHPP8e2RnPDMOshwJ2krpjTkDT66/view?usp=sharing) | 
+
 ## Testing
 * Below are the checkpoints corresponding to Tables 1 and 2 for VSR and ASR on LRS3. Models are provided for both low- and high-resource labelled data settings. In the high-resource setting, the models are fine-tuned on the full LRS3 dataset (433 hours). In the low-resource setting, they are fine-tuned on a subset ("trainval") of LRS3 (30 hours). 
 
